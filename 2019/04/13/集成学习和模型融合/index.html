@@ -2,22 +2,24 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>一些东西</title>
+<title>集成学习和模型融合 - 一些东西</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
     
-    <meta name="description" content="望知行合一，脚踏实地">
-<meta property="og:type" content="website">
-<meta property="og:title" content="一些东西">
-<meta property="og:url" content="http://leewangml.com/index.html">
+    <meta name="description" content="一、前言 众人拾柴火焰高。       ——XXX  在当前的机器学习算法竞赛中，模型融合方法已经十分普遍，在单学习器无法满足良好的学习效果的情况下，可以利用模型融合方法达到增强模型效果的作用。集成学习为《机器学习》(周志华)中的叫法，与模型融合类似，在这里一起进行介绍（以下模型融合即为集成学习）。在模型融合中，通过将多个学习器进行结合，以获得比单一学习器显著优越的泛化性能。本文将从什么是模型融合">
+<meta name="keywords" content="集成学习,竞赛">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集成学习和模型融合">
+<meta property="og:url" content="http://leewangml.com/2019/04/13/集成学习和模型融合/index.html">
 <meta property="og:site_name" content="一些东西">
-<meta property="og:description" content="望知行合一，脚踏实地">
+<meta property="og:description" content="一、前言 众人拾柴火焰高。       ——XXX  在当前的机器学习算法竞赛中，模型融合方法已经十分普遍，在单学习器无法满足良好的学习效果的情况下，可以利用模型融合方法达到增强模型效果的作用。集成学习为《机器学习》(周志华)中的叫法，与模型融合类似，在这里一起进行介绍（以下模型融合即为集成学习）。在模型融合中，通过将多个学习器进行结合，以获得比单一学习器显著优越的泛化性能。本文将从什么是模型融合">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-26T15:34:25.774Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一些东西">
-<meta name="twitter:description" content="望知行合一，脚踏实地">
+<meta name="twitter:title" content="集成学习和模型融合">
+<meta name="twitter:description" content="一、前言 众人拾柴火焰高。       ——XXX  在当前的机器学习算法竞赛中，模型融合方法已经十分普遍，在单学习器无法满足良好的学习效果的情况下，可以利用模型融合方法达到增强模型效果的作用。集成学习为《机器学习》(周志华)中的叫法，与模型融合类似，在这里一起进行介绍（以下模型融合即为集成学习）。在模型融合中，通过将多个学习器进行结合，以获得比单一学习器显著优越的泛化性能。本文将从什么是模型融合">
 
 
 
@@ -91,7 +93,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="一些东西" height="28">
+                <img src="/images/logo.svg" alt="集成学习和模型融合" height="28">
             
             </a>
         </div>
@@ -99,7 +101,7 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item is-active" href="/">主页</a>
+                <a class="navbar-item" href="/">主页</a>
                 
                 <a class="navbar-item" href="/archives">归档</a>
                 
@@ -136,119 +138,7 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-10-26T15:23:19.000Z">2019-10-26</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/图像/">图像</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    6 分钟 读完 (大约 859 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/10/26/图片生成文本描述/">图片生成文本描述</a>
-            
-        </h1>
-        <div class="content">
-            <blockquote>
-<p><a href="https://www.jiqizhixin.com/articles/2017-11-15-2" target="_blank" rel="noopener">https://www.jiqizhixin.com/articles/2017-11-15-2</a></p>
-</blockquote>
-<h2 id="1-传统方法"><a href="#1-传统方法" class="headerlink" title="1. 传统方法"></a>1. 传统方法</h2><h3 id="生成描述模板-基于目标检测和属性发现（attribute-discovery）的结果进行填充；"><a href="#生成描述模板-基于目标检测和属性发现（attribute-discovery）的结果进行填充；" class="headerlink" title="生成描述模板: 基于目标检测和属性发现（attribute discovery）的结果进行填充；"></a>生成描述模板: 基于目标检测和属性发现（attribute discovery）的结果进行填充；</h3><h3 id="数据库检索相似图像"><a href="#数据库检索相似图像" class="headerlink" title="数据库检索相似图像"></a>数据库检索相似图像</h3>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/10/26/图片生成文本描述/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-04-16T07:14:02.000Z">2019-04-16</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/图像/">图像</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    8 分钟 读完 (大约 1267 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/04/16/机器学习面试准备/">机器学习面试准备</a>
-            
-        </h1>
-        <div class="content">
-            <h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>为了面试，总结一下之前使用过的模型以及一些面试常问的问题。</p>
-<h1 id="二、相关模型"><a href="#二、相关模型" class="headerlink" title="二、相关模型"></a>二、相关模型</h1><h2 id="2-1-MobileNets"><a href="#2-1-MobileNets" class="headerlink" title="2.1 MobileNets"></a>2.1 MobileNets</h2><blockquote>
-<p>MobileNets are based on a streamlined architecture that uses depth-wise separable convolutions to build light weight deep neural networks.</p>
-<p align="right">—-MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications</p>
-</blockquote>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/04/16/机器学习面试准备/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main"><div class="card">
     
     <div class="card-content article ">
         
@@ -273,7 +163,7 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/04/13/集成学习和模型融合/">集成学习和模型融合</a>
+                集成学习和模型融合
             
         </h1>
         <div class="content">
@@ -282,66 +172,47 @@
 <p align="right">——XXX</p>
 </blockquote>
 <p>在当前的机器学习算法竞赛中，模型融合方法已经十分普遍，在单学习器无法满足良好的学习效果的情况下，可以利用模型融合方法达到增强模型效果的作用。集成学习为《机器学习》(周志华)中的叫法，与模型融合类似，在这里一起进行介绍（以下模型融合即为集成学习）。在模型融合中，通过<strong>将多个学习器进行结合，以获得比单一学习器显著优越的泛化性能</strong>。本文将从<strong>什么是模型融合、何处需要使用模型融合、模型融合方法及模型融合实例</strong>进行介绍。</p>
+<a id="more"></a>
+<h1 id="二、什么是模型融合"><a href="#二、什么是模型融合" class="headerlink" title="二、什么是模型融合"></a>二、什么是模型融合</h1><blockquote>
+<p>In <a href="https://en.wikipedia.org/wiki/Statistics" target="_blank" rel="noopener">statistics</a> and <a href="https://en.wikipedia.org/wiki/Machine_learning" target="_blank" rel="noopener">machine learning</a>, <strong>ensemble methods</strong> use multiple learning algorithms to obtain better <a href="https://en.wikipedia.org/wiki/Predictive_inference" target="_blank" rel="noopener">predictive performance</a> than could be obtained from any of the constituent learning algorithms alone. Unlike a <a href="https://en.wikipedia.org/wiki/Statistical_ensemble" target="_blank" rel="noopener">statistical ensemble</a> in statistical mechanics, which is usually infinite, a machine learning ensemble consists of only a concrete finite set of alternative models, but typically allows for much more flexible structure to exist among those alternatives.</p>
+<p align="right">–wikipedia</p>
+</blockquote>
+<p>在这段话中，介绍了模型融合的基本概念，模型融合指<strong>使用多种灵活多样(flexible structure)的学习算法集合获取更优的预测性能</strong>。所以说，模型融合可以看作是对单一学习算法的优化，可以改善单一算法预测准确率低、泛化性能差的缺点。</p>
+<p>在模型融合中，被融合的部分称为”个体学习器”(individual learner)，个体学习器就是我们常见的一些机器学习算法 (e.g. C4.5 决策树、BP神经网络)，依照个体学习器之间的差异，模型融合方法可以分为：</p>
+<ul>
+<li>基学习算法(base learning algorithm): 个体学习器是同质的(homogeneous);</li>
+<li>组件学习算法(component learning algorithm): 个体学习器是异质的。</li>
+</ul>
+<p>在模型融合的过程中，引出了不同的融合策略，如平均法(averaging)、投票法(voting)、学习法等，在第四大节将对这几种方法进行比较。</p>
+<p>在了解模型融合前，我们首先需要理解模型融合为什么可以提升模型的预测准确度。其实可以很形象的理解，我们将其类比于美国的陪审团制度，在案件裁决过程中，陪审团需要作出裁决，在刑事案件中只有获得全数同意才可通过，在其余民事案件中只要多数同意就可以通过。陪审团的设立可以在一定程度上减轻法官裁决过程的不公正性以及其他因素对裁决的影响。而模型融合类似，每个个体学习器可以看作陪审团中的每位成员，而裁决过程可以看作模型融合的过程，而最终裁决结果的判断则可以看成不同融合策略。</p>
+<p>下面从公式角度考虑模型融合对预测效果的提升，考虑一个二分类问题 $ y \in {-1,+1} $ 和真实函数(数据输入和真实输出的映射)$ f $，假定每个分类器的错误率为$ \epsilon $，即对每个分类器$ h_i $，有</p>
+<p>$$ P(h_i(x)\ne f(x))=\epsilon. $$</p>
+<p>假设融合策略为简单投票法(即超过半数即为最后结果)，那么分类结果中预测正确的分类器个数$ H $为</p>
+<p>$$ H(x)=\sum_{i=1}^Th_i(x). $$</p>
+<p>即统计所有分类器的结果，若超过半数预测为1，即为1，否则为0。则对模型融合后的整体模型，其错误率类似于$i$重伯努利随机事件($i=1,2,…,k$)的求和(因为当分类器预测正确的个数为1，2，3直到n/2时，简单投票法均将输出错误结果)，即</p>
+<p>$$ P(H(n)\le k)=\sum_{i=0}^kC_n^i(1-\epsilon-in)^i\epsilon^{n-i} $$</p>
+<p>在这里需要简单介绍一下Hoeffding不等式，其详细介绍见<a href="https://en.wikipedia.org/wiki/Hoeffding%27s_inequality" target="_blank" rel="noopener">此链接</a>。Hoeffding不等式可以用于计算一个算法的泛化误差上届，即随机变量的和与期望偏差的概率上届，可以理解为计算预测错误的概率最大可能值。通过衡量不同算法间的泛化误差上届，可以比较不同算法的优劣。Hoeffding的具体证明方法不再阐述，设正确预测的概率为$ p $，对于$n$个学习器，则预测正确次数的期望值为$ n*p $，则正确预测的次数不超过$k$次的概率为：</p>
+<p>$$ P(H(n)\le k)=\sum_{i=0}^kC^i_np^i(1-p)^{n-i}. $$</p>
+<p>而对某一$\varepsilon&gt;0$当$k=(p-\varepsilon)$时，有Hoeffding不等式</p>
+<p>$$ P(H(n)\le(p-\varepsilon)n)\le e^{-2\varepsilon^2n}.$$</p>
+<p>由于使用简单投票法，则当基学习器预测正确个数小于$\frac{n}{2}$时，融合模型输出结果错误，因此取$k=\frac{n}{2}$，则模型融合的错误率为</p>
+<p>$$ P(sign(H(x))\ne f(x))=P(H(n)\le\frac{n}{2}) $$</p>
+<p>$$ =\sum_{i=0}^{\frac{n}{2}}C_n^i(1-\epsilon)^i\epsilon^{n-i} $$</p>
+<p>$$ \le exp(-\frac{n}{2}(1-2\epsilon^2)) $$</p>
+<p>由上式我们可以看出，随着融合模型的分类器个数n增大，集成的错误率在呈指数级的下降，并最终趋于0。</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
+        <div class="level is-size-7 is-uppercase">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/04/13/集成学习和模型融合/#more">阅读更多</a>
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/竞赛/">竞赛</a>, <a class="has-link-grey -link" href="/tags/集成学习/">集成学习</a>
                 </div>
             </div>
         </div>
         
         
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-03-23T04:38:23.796Z">2019-03-23</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    1 分钟 读完 (大约 121 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/03/23/hello-world/">Hello World</a>
-            
-        </h1>
-        <div class="content">
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="hljs-string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-        </div>
-        
-        
         
     </div>
 </div>
@@ -350,7 +221,26 @@
 
 
 
-
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/04/16/机器学习面试准备/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">机器学习面试准备</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/03/23/hello-world/">
+                <span class="level-item">Hello World</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
 
 
 </div>
@@ -704,7 +594,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.svg" alt="一些东西" height="28">
+                    <img src="/images/logo.svg" alt="集成学习和模型融合" height="28">
                 
                 </a>
                 <p class="is-size-7">
