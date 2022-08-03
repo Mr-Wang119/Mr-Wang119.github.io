@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Learning Notes: Google File System - Masen Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Masen Blog"><meta name="msapplication-TileImage" content="/img/favicon.JPG"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Masen Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="https:&amp;#x2F;&amp;#x2F;static.googleusercontent.com&amp;#x2F;media&amp;#x2F;research.google.com&amp;#x2F;zh-CN&amp;#x2F;&amp;#x2F;archive&amp;#x2F;gfs-sosp2003.pdf  Google File System is a scalable distributed file system for large distributed data-intensive applicati"><meta property="og:type" content="blog"><meta property="og:title" content="Learning Notes: Google File System"><meta property="og:url" content="http://leewangml.com/2022/03/12/Learning-Notes-Google-File-System/"><meta property="og:site_name" content="Masen Blog"><meta property="og:description" content="https:&amp;#x2F;&amp;#x2F;static.googleusercontent.com&amp;#x2F;media&amp;#x2F;research.google.com&amp;#x2F;zh-CN&amp;#x2F;&amp;#x2F;archive&amp;#x2F;gfs-sosp2003.pdf  Google File System is a scalable distributed file system for large distributed data-intensive applicati"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://s3.amazonaws.com/images.masen.com/2022/03/0d54a6da76caa99f283ec1b8fc9ef867.jpg"><meta property="article:published_time" content="2022-03-12T18:55:54.000Z"><meta property="article:modified_time" content="2022-08-03T22:18:23.256Z"><meta property="article:author" content="Zhe Wang"><meta property="article:tag" content="Distributed System"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://s3.amazonaws.com/images.masen.com/2022/03/0d54a6da76caa99f283ec1b8fc9ef867.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://leewangml.com/2022/03/12/Learning-Notes-Google-File-System/"},"headline":"Learning Notes: Google File System","image":["https://s3.amazonaws.com/images.masen.com/2022/03/0d54a6da76caa99f283ec1b8fc9ef867.jpg"],"datePublished":"2022-03-12T18:55:54.000Z","dateModified":"2022-08-03T22:18:23.256Z","author":{"@type":"Person","name":"Zhe Wang"},"publisher":{"@type":"Organization","name":"Masen Blog","logo":{"@type":"ImageObject","url":"http://leewangml.com/img/logo.svg"}},"description":"https:&#x2F;&#x2F;static.googleusercontent.com&#x2F;media&#x2F;research.google.com&#x2F;zh-CN&#x2F;&#x2F;archive&#x2F;gfs-sosp2003.pdf  Google File System is a scalable distributed file system for large distributed data-intensive applicati"}</script><link rel="canonical" href="http://leewangml.com/2022/03/12/Learning-Notes-Google-File-System/"><link rel="icon" href="/img/favicon.JPG"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+          Array
+              .from(document.querySelectorAll('.tab-content'))
+              .forEach($tab => {
+                  $tab.classList.add('is-hidden');
+              });
+          Array
+              .from(document.querySelectorAll('.tabs li'))
+              .forEach($tab => {
+                  $tab.classList.remove('is-active');
+              });
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Masen Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="hhttps://github.com/Mr-Wang119"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="https://s3.amazonaws.com/images.masen.com/2022/03/0d54a6da76caa99f283ec1b8fc9ef867.jpg" alt="Learning Notes: Google File System"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-03-12T18:55:54.000Z" title="3/12/2022, 10:55:54 AM">2022-03-12</time></span><span class="level-item">Updated&nbsp;<time dateTime="2022-08-03T22:18:23.256Z" title="8/3/2022, 3:18:23 PM">2022-08-03</time></span><span class="level-item">10 minutes read (About 1484 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">Learning Notes: Google File System</h1><div class="content"><blockquote>
+<p><a target="_blank" rel="noopener" href="https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/gfs-sosp2003.pdf">https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/gfs-sosp2003.pdf</a></p>
+</blockquote>
+<p>Google File System is a scalable distributed file system for large distributed data-intensive applications. </p>
+<h1 id="Characteristic"><a href="#Characteristic" class="headerlink" title="Characteristic"></a>Characteristic</h1><hr>
+<ul>
+<li>Fault tolerance;</li>
+<li>Inexpensive commodity hardware;</li>
+<li>Supporting distributed applications.</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="Key-Observations"><a href="#Key-Observations" class="headerlink" title="Key Observations"></a>Key Observations</h1><hr>
+<h2 id="1-Component-failures-are-the-norm-rather-than-the-exception"><a href="#1-Component-failures-are-the-norm-rather-than-the-exception" class="headerlink" title="1. Component failures are the norm rather than the exception."></a>1. Component failures are the norm rather than the exception.</h2><p>Constant monitoring, error detection, fault tolerance, and automatic recovery must be integral to the system. </p>
+<h2 id="2-Files-are-huge-by-traditional-standards-Multi-GB-files-are-common"><a href="#2-Files-are-huge-by-traditional-standards-Multi-GB-files-are-common" class="headerlink" title="2. Files are huge by traditional standards. Multi-GB files are common."></a>2. Files are huge by traditional standards. Multi-GB files are common.</h2><p>Design assumptions and parameters such as I&#x2F;O operation and block size have to be revisited.</p>
+<h2 id="3-Most-files-are-mutated-by-appending-new-data-rather-than-overwriting-existing-data"><a href="#3-Most-files-are-mutated-by-appending-new-data-rather-than-overwriting-existing-data" class="headerlink" title="3. Most files are mutated by appending new data rather than overwriting existing data"></a>3. Most files are mutated by appending new data rather than overwriting existing data</h2><p>Appending becomes the focus of performance optimization and atomicity guarantees.</p>
+<h2 id="4-Co-designing-the-applications-and-the-file-system-API-benefits-the-overall-system-by-increasing-our-flexibility"><a href="#4-Co-designing-the-applications-and-the-file-system-API-benefits-the-overall-system-by-increasing-our-flexibility" class="headerlink" title="4. Co-designing the applications and the file system API benefits the overall system by increasing our flexibility."></a>4. Co-designing the applications and the file system API benefits the overall system by increasing our flexibility.</h2><p>The related consistency model vastly simplifies the file system without imposing an onerous burden on the applications. Introduced an atomic append operation so that multiple clients can append concurrently to a file without extra synchronization between them.</p>
+<h1 id="Assumptions"><a href="#Assumptions" class="headerlink" title="Assumptions"></a>Assumptions</h1><hr>
+<ul>
+<li>System often fails</li>
+<li>System stores a modest number of large files</li>
+<li>Read:<ul>
+<li>Large streaming reads</li>
+<li>Small random reads</li>
+</ul>
+</li>
+<li>Many large, sequential writes that append data to files</li>
+<li>Multiple clients concurrently append to the same file</li>
+<li>High sustained bandwidth is more important than low latency</li>
+</ul>
+<h1 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h1><hr>
+<p><img src="https://s3.amazonaws.com/images.masen.com/2022/03/2133ea129f3ff777f472c343f4c4aa0f.png" alt="image-20220312112220484"></p>
+<p>A GFS cluster consists of a single master and multiple chunkservers and is accessed by multiple clients. Files are divided into fixed-size chunks. Each chunk is replicated on multiple chunkservers. The master maintains all file system metadata. Clients interact with the master for metadata operations, but all data-bearing communication goes directly to the chunkservers. Neither the client nor the chunk server caches file data. Client caches offer little benefit because most applications stream through huge files or have working sets too large to be cached.</p>
+<h2 id="Data-Flow"><a href="#Data-Flow" class="headerlink" title="Data Flow"></a>Data Flow</h2><p><img src="https://s3.amazonaws.com/images.masen.com/2022/03/436fc1dc4d0e409aca9210b87fc6602f.png" alt="image-20220312170638648"></p>
+<p>Utilize each machine’s network bandwidth: The data is pushed linearly along a chain of chunk servers rather than distributed in some other topology.</p>
+<p>Avoid network bottlenecks and high-latency links as much as possible: Each machine forwards the data to the “closest” machine in the network topology that has not received it.</p>
+<p>Minimize latency: Pipelining the data transfer over TCP connections as using a switched network with full-duplex links.</p>
+<p>The ideal elapsed time for transferring B bytes to R replicas is B&#x2F;T + RL where T is the network throughput and L is the latency to transfer bytes between two machines.</p>
+<h2 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h2><p>Maintain: File and chunk namespaces, access control information, the mapping from files to chunks, and the current locations of chunks.</p>
+<p>Control: System-wide activities such as chunk lease management, garbage collection of orphaned chunks, and chunk migration between chunkservers.</p>
+<p>Single Server Advantages: Simplify the design and enable the master to make sophisticated chunk placement and replication decisions using global knowledge.</p>
+<p>No Single Server bottleneck: (1) Clients never ask for files or write file data from the master. (2) Clients cache this information for a limited time. In this way, they could interact with chunkservers directly.</p>
+<h2 id="Chunk-Size"><a href="#Chunk-Size" class="headerlink" title="Chunk Size"></a>Chunk Size</h2><p>64 MB. Lazy space allocation avoids wasting space due to internal fragmentation.</p>
+<p>Large Chunk Size Advantages: (1) Reduce the client’s need to interact with the master. (2) Client could perform many operations on a given chunk, reducing network overhead by keeping a persistent TCP. (3) Reduce master meta data size. In this way, meta data could be put into the memory of the master.</p>
+<p>Large Chunk Size Disadvantages: Small file size means a small number of chunks, perhaps just one. The chunkservers storing those chunks may become hot spots if many clients are accessing the same file. The solution is: (1) store this with a higher replication factor, (2) stagger app start times.</p>
+<h2 id="Meta-Data"><a href="#Meta-Data" class="headerlink" title="Meta Data"></a>Meta Data</h2><ul>
+<li>File and chunk namespaces</li>
+<li>Mapping from files to chunks</li>
+<li>Locations of each chunk’s replicas.</li>
+</ul>
+<p>All metadata is kept in the master’s memory. The first two types are also kept persistent by logging mutations to an operation log stored on the master’s local disk and replicated on remote machines.</p>
+<p>Store in Memory Advantages: It is easy and efficient for the master to periodically scan through its entire state in the background. (Chunk garbage collection, re-replication in the presence of chunkserver failures, and chunk migration to balance load and disk space usage across chunkservers)</p>
+<p>What if memory limitation? The master maintains less than 64 bytes of metadata for each 64 MB chunk. The file namespace data typically requires less than 64 bytes per file because it stores file names compactly using prefix compression.</p>
+<h2 id="Chunk-Location"><a href="#Chunk-Location" class="headerlink" title="Chunk Location"></a>Chunk Location</h2><p>Not persistent record. The master polls at startup.</p>
+<p>Updated: The master controls all chunk placement and monitors chunkserver status with regular HeartBeat messages.</p>
+<h2 id="Operation-Log"><a href="#Operation-Log" class="headerlink" title="Operation Log"></a>Operation Log</h2><p>Historical records of critical metadata changes. Logical time line that defines the order of concurrent operations.</p>
+<p>(1) Replicate it on multiple remote machines.</p>
+<p>(2) Respond to a client operation only after flushing the corresponding log record to disk both locally and remotely.</p>
+<p>Minimize startup time:  Keep the log small. The master checkpoints its state whenever the log grows beyond a certain size so that it can recover by loading the latest checkpoint from local disk and replying only the limited number of log records after that.</p>
+<h2 id="Consistency-Model"><a href="#Consistency-Model" class="headerlink" title="Consistency Model"></a>Consistency Model</h2><p>File namespace mutations are atomic. Namespace locking guarantees atomicity and correctness.</p>
+<p><img src="https://s3.amazonaws.com/images.masen.com/2022/03/ba7d8985b14b499fd1ce051c4cfeef8a.png" alt="image-20220312161707539"></p>
+<p>Defined: Consistent and clients will see what the mutation writes in its entry.</p>
+<p>Consistent but undefined: All clients will always see the same data, but it may not reflect what anyone mutation has written.</p>
+<p>After a sequence of successful mutations, the mutated file region is guaranteed to be defined and contain the data written by the last mutation.</p>
+<p>​    (a) applying mutations to a chunk in the same order on all its replicas.</p>
+<p>​    (b) Using chunk version numbers to detect any replica that has become stale because it has missed mutations while its chunkserver was down.</p>
+<p>❌ Stale replica:</p>
+<p>​    (a) The cache entry has a timeout and the next open of the file, which purges from the cache all chunk information for the file.</p>
+<p>​    (b) As most of the files are append-only, a stale replica usually returns a premature end of chunk rather than outdated data.    </p>
+<p>❌ Component failures: GFS identifies failed chunkservers by regular handshakes between master and all chunkservers and detects data corruption by checksumming.</p>
+<h2 id="Implications-for-Applications"><a href="#Implications-for-Applications" class="headerlink" title="Implications for Applications"></a>Implications for Applications</h2><ul>
+<li>Appends rather than overwrites</li>
+<li>Checkpoints include application-level checksums</li>
+<li>Writing self-validation</li>
+<li>Self-identifying records</li>
+</ul>
+<h1 id="Atomic-Record-Appends"><a href="#Atomic-Record-Appends" class="headerlink" title="Atomic Record Appends"></a>Atomic Record Appends</h1><hr>
+<p>In a record append, the client specifies only the data. GFS appends it to the file at least once atomically.</p>
+<p>Similar to the data flow, except if append cause the chunk exceeds maximum size (64 MB).</p>
+<h1 id="Snapshot"><a href="#Snapshot" class="headerlink" title="Snapshot"></a>Snapshot</h1><hr>
+<p>A copy of a file or a directory tree almost instantaneously. Use standard copy-on-write techniques to implement snapshots. </p>
+<p>(1) The master revokes any outstanding leases on the chunks in the files it is about to snapshot.</p>
+<p>(2) The master logs the operation to disk. It then applies this log record to its in-memory state by duplicating the metadata for the source file or directory tree. The newly created snapshot files point to the same chunks as the source files.</p>
+<p>(3) The client wants to write to Chunk C after snapshot operation. It sends a request to the master to find the lease handler. The master checks that the reference count for chunk C is greater than one. It would pick a new chunk handle.</p>
+<h1 id="Master-Operations"><a href="#Master-Operations" class="headerlink" title="Master Operations"></a>Master Operations</h1><ul>
+<li>Allow multiple operations to be active and use locks over regions of the namespace to ensure proper serialization.</li>
+<li>Use lookup table: fullPathNames -&gt; metaData</li>
+<li>Read lock: Prevent the directory from being deleted, renamed, or snapshotted.</li>
+<li>Write lock: Prevent creating a file with the same name.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/d1/d2/.../dn/     leaf</span><br><span class="line">  read-locks    write-locks</span><br></pre></td></tr></table></figure>
+
+<h1 id="Chunk-Replicas"><a href="#Chunk-Replicas" class="headerlink" title="Chunk Replicas"></a>Chunk Replicas</h1><h2 id="Creation"><a href="#Creation" class="headerlink" title="Creation"></a>Creation</h2><ul>
+<li>Place on chunkservers with below-average disk space utilization.</li>
+<li>Limit the number of “recent” creations on each chunkserver.</li>
+<li>Spend replicas of a chunk across racks.</li>
+</ul>
+<h2 id="Re-replicates"><a href="#Re-replicates" class="headerlink" title="Re-replicates"></a>Re-replicates</h2><p>The master re-replicates a chunk as soon as the number of available replicas falls below a user-specific goal.</p>
+<ul>
+<li>A chunkserver becomes unavailable.</li>
+<li>Replica corrupted.</li>
+<li>One of the disks is disabled.</li>
+<li>Replication goal is increased.</li>
+</ul>
+<p>Priority: (1) How far to the goal (2) is there any chunk that is blocking client progress.</p>
+<h2 id="Stale-Replica-Detection"><a href="#Stale-Replica-Detection" class="headerlink" title="Stale Replica Detection"></a>Stale Replica Detection</h2><p>Master maintains a chunk version number to distinguish between up-to-date and stale replicas. After granting a new lease, the master increases the chunk version number and informs the up-to-date replicas. After the chunkserver restarts and reports its set of chunks and associated version number. If the master sees a version number greater than the one in its records, the master assumes that it failed when granting the lease.</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Learning Notes: Google File System</p><p><a href="http://leewangml.com/2022/03/12/Learning-Notes-Google-File-System/">http://leewangml.com/2022/03/12/Learning-Notes-Google-File-System/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Zhe Wang</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-03-12</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2022-08-03</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Distributed-System/">Distributed System</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/02/19/Introduction-of-Eluerian-path/"><span class="level-item">Introduction of Eulerian path</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "20a87d73f5eb8904c512133b6b83cd3f",
+            repo: "https://github.com/Mr-Wang119/Mr-Wang119.github.io",
+            owner: "Mr-Wang119",
+            clientID: "7ba4a13c098768702c7c",
+            clientSecret: "b09b3b9b2aed35c372561f49a8b8cf26e9926204",
+            admin: ["Mr-Wang119"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "en",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="https://s3.amazonaws.com/images.masen.com/IMG_3439.JPG" alt="Zhe (Masen) Wang"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Zhe (Masen) Wang</p><p class="is-size-6 is-block">ECE M.Eng. UIUC</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Urbana,IL,USA</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">7</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/Mr-Wang119" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/Mr-Wang119"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/zhe-joe-wang-79b1b31a4/"><i class="fab fa-linkedin"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Email" href="mailto:zhewang8@illinois.edu"><i class="fa fa-envelope"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E5%9B%BE%E5%83%8F/"><span class="level-start"><span class="level-item">图像</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/"><span class="level-start"><span class="level-item">机器学习基础</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/"><span class="level-start"><span class="level-item">自然语言处理</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2022-03-12T18:55:54.000Z">2022-03-12</time></p><p class="title"><a href="/2022/03/12/Learning-Notes-Google-File-System/">Learning Notes: Google File System</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2022-02-19T18:05:51.000Z">2022-02-19</time></p><p class="title"><a href="/2022/02/19/Introduction-of-Eluerian-path/">Introduction of Eulerian path</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-01-22T19:42:24.000Z">2020-01-22</time></p><p class="title"><a href="/2020/01/22/Sequence%20Models%20%E7%BB%BC%E8%BF%B0/">GRU LSTM 综述</a></p><p class="categories"><a href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-01-17T18:26:00.000Z">2020-01-17</time></p><p class="title"><a href="/2020/01/17/%E5%9B%BE%E5%83%8F%E6%8F%8F%E8%BF%B0%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/">图像自动生成描述</a></p><p class="categories"><a href="/categories/%E5%9B%BE%E5%83%8F/">图像</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2019-10-27T06:23:19.000Z">2019-10-26</time></p><p class="title"><a href="/2019/10/26/%E5%9B%BE%E7%89%87%E7%94%9F%E6%88%90%E6%96%87%E6%9C%AC%E6%8F%8F%E8%BF%B0/">图片生成文本描述</a></p><p class="categories"><a href="/categories/%E5%9B%BE%E5%83%8F/">图像</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2022/03/"><span class="level-start"><span class="level-item">March 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/02/"><span class="level-start"><span class="level-item">February 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/01/"><span class="level-start"><span class="level-item">January 2020</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/10/"><span class="level-start"><span class="level-item">October 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/04/"><span class="level-start"><span class="level-item">April 2019</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Algorithms/"><span class="tag">Algorithms</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Distributed-System/"><span class="tag">Distributed System</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"><span class="tag">图像处理</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/"><span class="tag">图像特征提取</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%AB%9E%E8%B5%9B/"><span class="tag">竞赛</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/"><span class="tag">自然语言处理</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/"><span class="tag">语言模型</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/"><span class="tag">集成学习</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%9D%A2%E8%AF%95/"><span class="tag">面试</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE/"><span class="tag">项目</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Masen Blog" height="28"></a><p class="is-size-7"><span>&copy; 2022 Zhe Wang</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Mr-Wang119"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

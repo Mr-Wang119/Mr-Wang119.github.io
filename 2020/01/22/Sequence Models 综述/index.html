@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>GRU LSTM 综述 - Masen Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Masen Blog"><meta name="msapplication-TileImage" content="/img/favicon.JPG"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Masen Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="总结于Deeplearning.ai  1. 符号表示"><meta property="og:type" content="blog"><meta property="og:title" content="GRU LSTM 综述"><meta property="og:url" content="http://leewangml.com/2020/01/22/Sequence%20Models%20%E7%BB%BC%E8%BF%B0/"><meta property="og:site_name" content="Masen Blog"><meta property="og:description" content="总结于Deeplearning.ai  1. 符号表示"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200202213436.png"><meta property="og:image" content="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200202213436.png"><meta property="og:image" content="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200203110709.png"><meta property="og:image" content="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200203153623.png"><meta property="og:image" content="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200204142021.png"><meta property="og:image" content="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200204162338.png"><meta property="article:published_time" content="2020-01-22T19:42:24.000Z"><meta property="article:modified_time" content="2022-08-03T22:18:23.257Z"><meta property="article:author" content="Zhe Wang"><meta property="article:tag" content="自然语言处理"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200202213436.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://leewangml.com/2020/01/22/Sequence%20Models%20%E7%BB%BC%E8%BF%B0/"},"headline":"GRU LSTM 综述","image":["https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200202213436.png","https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200202213436.png","https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200203110709.png","https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200203153623.png","https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200204142021.png","https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200204162338.png"],"datePublished":"2020-01-22T19:42:24.000Z","dateModified":"2022-08-03T22:18:23.257Z","author":{"@type":"Person","name":"Zhe Wang"},"publisher":{"@type":"Organization","name":"Masen Blog","logo":{"@type":"ImageObject","url":"http://leewangml.com/img/logo.svg"}},"description":"总结于Deeplearning.ai  1. 符号表示"}</script><link rel="canonical" href="http://leewangml.com/2020/01/22/Sequence%20Models%20%E7%BB%BC%E8%BF%B0/"><link rel="icon" href="/img/favicon.JPG"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+          Array
+              .from(document.querySelectorAll('.tab-content'))
+              .forEach($tab => {
+                  $tab.classList.add('is-hidden');
+              });
+          Array
+              .from(document.querySelectorAll('.tabs li'))
+              .forEach($tab => {
+                  $tab.classList.remove('is-active');
+              });
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Masen Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="hhttps://github.com/Mr-Wang119"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-01-22T19:42:24.000Z" title="1/22/2020, 11:42:24 AM">2020-01-22</time></span><span class="level-item">Updated&nbsp;<time dateTime="2022-08-03T22:18:23.257Z" title="8/3/2022, 3:18:23 PM">2022-08-03</time></span><span class="level-item"><a class="link-muted" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></span><span class="level-item">22 minutes read (About 3287 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">GRU LSTM 综述</h1><div class="content"><blockquote>
+<p>总结于Deeplearning.ai</p>
+</blockquote>
+<h2 id="1-符号表示"><a href="#1-符号表示" class="headerlink" title="1. 符号表示"></a>1. 符号表示</h2><p><img src="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200202213436.png"></p>
+<span id="more"></span>
+
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$ x^{(t)} $</td>
+<td>位置$ t $的单词的特征表示</td>
+</tr>
+<tr>
+<td>$ y^{(t)} $</td>
+<td>第$ i $个句子位置t应输出的数据，即目标值 (图中未标出)</td>
+</tr>
+<tr>
+<td>$ T_x $</td>
+<td>输入序列的长度</td>
+</tr>
+<tr>
+<td>$ T_y$</td>
+<td>出序列的长度</td>
+</tr>
+<tr>
+<td>$ a^{(t)} $</td>
+<td>来自第$ t $个时间步的信息</td>
+</tr>
+<tr>
+<td>$ W_{ax} $</td>
+<td>从$ x^{(t)} $到隐藏层的连接的一系列参数</td>
+</tr>
+<tr>
+<td>$ W_{aa},\ b_a $</td>
+<td>激活值$ a^{(t)} $到下一个隐层的参数</td>
+</tr>
+<tr>
+<td>$ W^{ya} $</td>
+<td>输出值参数 (图中未画出)</td>
+</tr>
+<tr>
+<td>$ \hat{y}^{(t)} $</td>
+<td>位置t的输出数据</td>
+</tr>
+</tbody></table>
+<p>在表示单词时，可以使用one-hot表示法进行表示，one-hot列向量中只有一行为1，其余为0，这一行为这个列向量表示的单词。当遇见不属于词表的单词时，可以使用<UNK>的伪单词的列向量进行标记。</p>
+<p>循环神经网络参数在每个时间步中共享，因此上图显示的是数据随时间的流向，实际输出数据重新进入原RNN cell，因此上图三个cell中的$ W_{aa}$和$ W_{ax} $是相同的。</p>
+<h2 id="2-循环神经网络模型"><a href="#2-循环神经网络模型" class="headerlink" title="2. 循环神经网络模型"></a>2. 循环神经网络模型</h2><h3 id="1-为什么使用循环网络模型？"><a href="#1-为什么使用循环网络模型？" class="headerlink" title="(1) 为什么使用循环网络模型？"></a>(1) 为什么使用循环网络模型？</h3><ul>
+<li>每个输入与输出数据可以具有不同的长度，因此无法使用传统神经网络结构进行计算；</li>
+<li>简单的神经网络结构无法共享从文本不同位置学到的特征。文本识别可以类比卷积，在句子中不同位置出现的单词应当能够自动识别。使用传统网络结构一方面无法捕捉这种序列内部的位置信息，另一方面由于使用one-hot编码，因此每个单词乘字典维度为输入的数量，参数过多不适合训练。</li>
+</ul>
+<h3 id="2-神经网络结构"><a href="#2-神经网络结构" class="headerlink" title="(2) 神经网络结构"></a>(2) 神经网络结构</h3><p><img src="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200202213436.png"></p>
+<p>以句子作为输入为例，循环网络模型首先输入第一个单词的特征表示$ x^{(1)} $，并计算得到结果$ y^{(1)} $，之后读取第二个单词的特征表示$ x^{(2)} $，只是为了获得序列位置信息，网络结构还需要输入来自第一个时间步的信息，具体而言即时间步1的激活值$ a^{(1)} $会传入时间步2，与$ x^{(2)} $共同计算得到第二个时间步的输出$ y^{(2)} $，以此类推。</p>
+<p>在开始整个流程时，需要构造一个激活值$ a^{(0)} $，这个值将与第一个单词的特征表示$ x^{(1)} $共同参与计算第一个时间步的输出值$ y^{(1)} $，一般使用零向量，也可以随机使用其他方法进行初始化。</p>
+<h4 id="正向传播"><a href="#正向传播" class="headerlink" title="正向传播"></a>正向传播</h4><p>在正向传播过程的第$ t $个时间步中，先输入$ a^{(t-1)} $和$ x^{(t)} $，分别和各自的参数$ W_{aa} $和$ W_{ax} $相乘并相加，之后经过激活函数后得到激活值$ a^{(t)} $，成为下一个时间步的输入。同时计算得到这个时间步的输出值$ y^{(t)} $，即：<br>$$<br>a^{(t)}&#x3D;g_1(W_{aa}a^{(t-1)}+W_{ax}x^{(t)}+b_a),<br>$$</p>
+<p>$$<br>\hat{y}^{(t)}&#x3D;g_2(W_{ya}a^{(t)}+b_y).<br>$$</p>
+<p>循环神经网络的激活函数经常选用tanh，也可以视具体情况使用其他激活函数。选用哪种激活函数取决于实现什么功能，如果是二分类问题就可以使用sigmoid，k分类的话使用softmax是更好的选择。在上图中有两个激活函数，也就是式子中的$ g_1() $和$ g_2() $，上文所指的是$ g_2() $。</p>
+<p><img src="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200203110709.png"></p>
+<p>上文中的公式可以进行简化，我们定义$ W_a $为$ W_{aa} $和$ W_{ax} $并列放置，即上图左侧两个矩形构成的矩阵，然后将$ a^{(t-1)} $和$ x^{(t)} $纵向放置，构成一个矩阵，记为$ [a^{(t-1)},x^{(t)}] $，因此可以将公式改写为：<br>$$<br>a^{(t)}&#x3D;g_1(W_a[a^{(t-1)},x^{(t)}]+b_a),<br>$$</p>
+<p>$$<br>\hat{y}^{(t)}&#x3D;g_2(W_{ya}a^{(t)}+b_y).<br>$$</p>
+<h4 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h4><p>反向传播的代价函数可以使用softmax损失函数：</p>
+
+$$
+L^{(t)}(\hat{y}^{(t)},y^{(t)})=-\sum_i{y_i^{(t)}log\hat{y}_i^{(t)}}.
+$$
+
+
+<p>这个损失函数对应的序列中的一个具体的词，然后我们定义整个序列的损失函数，将$ L $定义为：<br>$$<br>L(\hat{y},y)&#x3D;\sum_{t&#x3D;1}^{T_x}L^{(t)}(\hat{y}^{(t)},y^{(t)}).<br>$$<br>在这个计算中，首先计算各个时间步的损失函数结果，然后将他们加起来，得到最后的损失。这种计算损失的方式称为backpropagation through time。</p>
+<h2 id="3-循环神经网络的梯度消失"><a href="#3-循环神经网络的梯度消失" class="headerlink" title="3. 循环神经网络的梯度消失"></a>3. 循环神经网络的梯度消失</h2><p>基本的RNN算法存在很大的问题。举一个语言模型的例子，当看到句子”The cat, which already ate ……, was full.”，句子的前后应当一致，即cat为单数，对应was。这个句子有长期的依赖，最前面的单词对后面的单词有影响。而传统的RNN算法不擅长捕获这种长期的影响。</p>
+<p>具体的原因类似网络层数加深时的梯度消失，在经过多个时间步后并反向传播，输出$ \hat{y} $的梯度很难传播回去，因此很难影响前面层的计算。这说明，很难让一个神经网络意识到它需要记住单词是单数形式还是复数形式。无论后面单词的预测正确与否，这个错误都很难影响到前面的参数。</p>
+<p>当然，也有可能遇到梯度爆炸的问题，模型没有收敛的趋势，而出现了很多NaN，这个时候可以使用梯度修剪，通过监测梯度向量，如果大于某个阈值，则缩放梯度向量，保证它不会太大。</p>
+<h2 id="4-GRU单元"><a href="#4-GRU单元" class="headerlink" title="4. GRU单元"></a>4. GRU单元</h2><p>Gated Recurrent Unit (GRU) 门控制单元改变了RNN的隐藏层，使其更适合捕捉深层的特征，改善了梯度消失问题。</p>
+<p>当从左往右读一个句子时，GRU单元使用一个新的变量，称其为$c$，代表细胞（cell），即记忆细胞。记忆细胞可以提供记忆的能力，即在后面的时间步中记忆前面时间步的信息。在时间$ t $处，有记忆细胞$ c^{(t)}&#x3D;a^{(t)} $。它们的值是一样的，不同的名称是为了区分激活值和记忆细胞。</p>
+<p>在每一个时间步中，我们需要计算一个候选值$ \widetilde{c}^{(t)}&#x3D;tanh(W_c[c^{(t-1)},x^{(t)}]+b_c) $，这个候选值和$ c^{(t)} $会被每个时间步选择使用哪一个。</p>
+<p>GRU中最重要的是我们使用了一个门$ \Gamma_u $，其中$ \Gamma $代表门，$ u $表示更新门，这是一个0到1之间的值。这个值的计算为：<br>$$<br>\Gamma_u&#x3D;\delta(W_u[c^{(t-1)},x^{(t)}]+b_u).<br>$$<br>因此，这个值是通过将计算结果带入sigmoid函数得到的。sigmoid使得大多数情况下，$ \Gamma_u $的输出基本上非常接近0或1。门的作用是控制是否需要更新记忆细胞的值。以上文的单数句子为例，GRU单元会记住这个句子使用了单数，从而在后面生成单词时选择其单数形式。可以通过下列的式子达到对句子中特定时间点的记忆：</p>
+
+$$
+c^{(t)}=\Gamma_u*\widetilde{c}^{(t)}+(1-\Gamma_u)*c^{(t-1)}.
+$$
+
+
+<p>在这个式子中，如果激活值的维度为100维，那么$ c^{(t-1)} $，$ \widetilde{c}^{(t)} $和$ \Gamma_u $均为100维，因此上式中的$ * $为元素对应相乘，而不是矩阵乘法。</p>
+<p>从这个式子中我们可以看到，当$\Gamma_u$的值接近1时，此时时间细胞会主要选择这个时间点计算的结果并存储在记忆细胞中，而当$ \Gamma_u $趋近于0时，$ c^{(t)} $会选择保留上一时间点的记忆$ c^{(t-1)} $，从而达到记忆某个时间点的目的。由于$ \Gamma_u $为一个向量，因此GRU单元可以选择保存这个向量中的部分值而更新其他值以达到保存部分特征并更新其他特征的目的。</p>
+<p><img src="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200203153623.png"></p>
+<p>上图绘制了一个<strong>简易的GRU单元</strong>第t个时间步中计算过程为：</p>
+<p>（1）输入上一个时间步的记忆细胞$ c^{(t-1)} $和这个时间步的输入$ x^{(t)} $，使用tanh函数计算得到候选值$ \widetilde{c}^{(t)} $；</p>
+<p>（2）同样输入上一个时间步的记忆细胞$ c^{(t-1)} $和这个时间步的输入$ x^{(t)} $，使用sigmoid函数计算得到更新门值$ \Gamma_u $；</p>
+<p>（3）进行记忆细胞值的更新。输入上一个时间步的记忆细胞$ c^{(t-1)} $和这个时间步的输入$ x^{(t)} $，以及上一步计算得到的更新门值$ \Gamma_u $，计算得到新的记忆细胞值$ c^{(t)} $；</p>
+<p>（4）输入新的记忆细胞值$ c^{(t)} $，通过softmax函数生成这个时间步的输出$ \hat{y}^{(t)} $。</p>
+<p>由于现在这些门很容易取到0值，因此更新的式子就会变成$ c^{(t)}&#x3D;c^{(t-1)} $，这非常有利于维持细胞的值，因此就不会有梯度消失的问题了，因此允许神经网络运行在非常庞大的依赖词上。</p>
+<p>对于<strong>完整的GRU单元</strong>，我们需要在计算记忆细胞的候选值时加入一个新的项$ \Gamma_r $，这个项是一个新的门，其中的$ r $可以理解为相关性(relevance)，这个门告诉了计算出的下一个$ c^{(t)} $的候选值$ \widetilde{c}^{(t)} $跟$ c^{(t-1)} $有多大的相关性。计算相关门的值需要一个新的参数矩阵$ W_r $，$ \Gamma_r&#x3D;\sigma(W_r[c^{(t-1)},x^{(t)}]+b_r) $。因此完整的GRU单元的公式如下：</p>
+
+$$
+\widetilde{c}^{(t)}=tanh(W_c[\Gamma_r*c^{(t-1)},x^{(t)}]+b_c),
+$$
+
+$$
+\Gamma_u=\sigma(W_u[c^{(t-1)},x^{(t)}]+b_u),
+$$
+
+$$
+\Gamma_r=\sigma(W_r[c^{(t-1)},x^{(t)}]+b_r),
+$$
+
+$$
+c^{(t)}=\Gamma_u*\widetilde{c}^{(t)}+(1-\Gamma_u)*c^{(t-1)}.
+$$
+
+
+
+<h2 id="5-LSTM单元"><a href="#5-LSTM单元" class="headerlink" title="5. LSTM单元"></a>5. LSTM单元</h2><p>LSTM相比于GRU，更加强大和通用。</p>
+<p><img src="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200204142021.png"></p>
+<p>上面为LSTM和GRU的主要式子对比。相比GRU，LSTM没有相关门$ \Gamma_r $，同时激活值$a^{(t)}$不等于记忆细胞值$ c^{(t)} $。像以前一样，我们有一个更新门$ \Gamma_u $和表示更新的参数$ W_u $，$ \Gamma_u&#x3D;\sigma(W_u[a^{(t-1)},x^{(t)}]+b_u) $，即上图中1。LSTM的一个新特性是不止有更新门控制，在计算新的记忆细胞值时，LSTM使用两个门$ \Gamma_u $和$ \Gamma_f $来控制，而不是仅使用$ \Gamma_u $来控制（如图2，3）。其中$ \Gamma_f $为遗忘门，$ \Gamma_f&#x3D;\sigma(W_f[a^{(t-1)},x^{(t)}]+b_f) $。还有一个新的输出门$ \Gamma_o&#x3D;\sigma(W_o[a^{(t-1)},x^{(t)}]+b_o) $。</p>
+
+
+于是，记忆细胞的更新值$ c^{(t)}=\Gamma_u*\widetilde{c}^{(t)}+\Gamma_f*c^{(t-1)} $。最后，$ a^{(t)}=c^{(t)} $的式子变成了$ a^{(t)}=\Gamma_o*c^{(t)} $。
+
+
+
+<p><img src="https://leewangml.oss-cn-beijing.aliyuncs.com/images/20200204162338.png"></p>
+<p>LSTM在时间步t的计算过程如下：</p>
+<p>（1）输入激活值$ a^{(t-1)} $和输入数据$ x^{(t)} $，带入forget gate、update gate、output gate公式，计算得到值$ \Gamma_f $、$ \Gamma_u $和$ \Gamma_o $；</p>
+<p>（2）输入激活值$ a^{(t-1)} $和输入数据$ x^{(t)} $，带入tanh公式，得到候选值$ \widetilde{c}^{(t)} $；</p>
+<p>（3）利用 (1) 中计算的得到的$ \Gamma_f $、$ \Gamma_u $，（2）中计算得到的候选值$ \widetilde{c}^{(t)} $，以及上一个时间步记忆单元的值$ c^{(t-1)} $计算得到新的记忆单元值$ c^{(t)} $；</p>
+<p>（4）输入输出门$ \Gamma_o $的值和 (3) 中计算得到的本时间步的记忆单元的值计算得到新的激活值$ a^{(t)} $；</p>
+<p>（5）将新的激活值送入激活函数（例如softmax），得到输出值$ y^{(t)} $。</p>
+<p>LSTM最常用的版本的门值不仅取决于$ a^{(t-1)} $和$x^{(t)}$，也可以偷窥一下$ c^{(t-1)} $的值，这叫做peephole connection。因此在计算三个门$ \Gamma_f $、$ \Gamma_u $和$ \Gamma_o $时，加入$ c^{(t-1)} $计算。实际上，$ c^{(t-1)} $中的每一个元素仅能硬系那个处于同一维度的门值，不能硬系那个所有元素，因此偷窥孔可以称为是一对一的。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>GRU LSTM 综述</p><p><a href="http://leewangml.com/2020/01/22/Sequence Models 综述/">http://leewangml.com/2020/01/22/Sequence Models 综述/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Zhe Wang</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2020-01-22</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2022-08-03</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2022/02/19/Introduction-of-Eluerian-path/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Introduction of Eulerian path</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/01/17/%E5%9B%BE%E5%83%8F%E6%8F%8F%E8%BF%B0%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/"><span class="level-item">图像自动生成描述</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "ddb7bba30e994a7f3e204364c3f9d8d3",
+            repo: "https://github.com/Mr-Wang119/Mr-Wang119.github.io",
+            owner: "Mr-Wang119",
+            clientID: "7ba4a13c098768702c7c",
+            clientSecret: "b09b3b9b2aed35c372561f49a8b8cf26e9926204",
+            admin: ["Mr-Wang119"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "en",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="https://s3.amazonaws.com/images.masen.com/IMG_3439.JPG" alt="Zhe (Masen) Wang"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Zhe (Masen) Wang</p><p class="is-size-6 is-block">ECE M.Eng. UIUC</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Urbana,IL,USA</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">7</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/Mr-Wang119" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/Mr-Wang119"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/zhe-joe-wang-79b1b31a4/"><i class="fab fa-linkedin"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Email" href="mailto:zhewang8@illinois.edu"><i class="fa fa-envelope"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E5%9B%BE%E5%83%8F/"><span class="level-start"><span class="level-item">图像</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/"><span class="level-start"><span class="level-item">机器学习基础</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/"><span class="level-start"><span class="level-item">自然语言处理</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2022-03-12T18:55:54.000Z">2022-03-12</time></p><p class="title"><a href="/2022/03/12/Learning-Notes-Google-File-System/">Learning Notes: Google File System</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2022-02-19T18:05:51.000Z">2022-02-19</time></p><p class="title"><a href="/2022/02/19/Introduction-of-Eluerian-path/">Introduction of Eulerian path</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-01-22T19:42:24.000Z">2020-01-22</time></p><p class="title"><a href="/2020/01/22/Sequence%20Models%20%E7%BB%BC%E8%BF%B0/">GRU LSTM 综述</a></p><p class="categories"><a href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-01-17T18:26:00.000Z">2020-01-17</time></p><p class="title"><a href="/2020/01/17/%E5%9B%BE%E5%83%8F%E6%8F%8F%E8%BF%B0%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/">图像自动生成描述</a></p><p class="categories"><a href="/categories/%E5%9B%BE%E5%83%8F/">图像</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2019-10-27T06:23:19.000Z">2019-10-26</time></p><p class="title"><a href="/2019/10/26/%E5%9B%BE%E7%89%87%E7%94%9F%E6%88%90%E6%96%87%E6%9C%AC%E6%8F%8F%E8%BF%B0/">图片生成文本描述</a></p><p class="categories"><a href="/categories/%E5%9B%BE%E5%83%8F/">图像</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2022/03/"><span class="level-start"><span class="level-item">March 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/02/"><span class="level-start"><span class="level-item">February 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/01/"><span class="level-start"><span class="level-item">January 2020</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/10/"><span class="level-start"><span class="level-item">October 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/04/"><span class="level-start"><span class="level-item">April 2019</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Algorithms/"><span class="tag">Algorithms</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Distributed-System/"><span class="tag">Distributed System</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"><span class="tag">图像处理</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/"><span class="tag">图像特征提取</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%AB%9E%E8%B5%9B/"><span class="tag">竞赛</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/"><span class="tag">自然语言处理</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/"><span class="tag">语言模型</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/"><span class="tag">集成学习</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%9D%A2%E8%AF%95/"><span class="tag">面试</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE/"><span class="tag">项目</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Masen Blog" height="28"></a><p class="is-size-7"><span>&copy; 2022 Zhe Wang</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Mr-Wang119"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
