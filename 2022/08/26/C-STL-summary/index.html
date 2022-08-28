@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>C++ STL summary - Masen Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Masen Blog"><meta name="msapplication-TileImage" content="/img/favicon.JPG"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Masen Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="SummaryThe idea of STL (Standard Template Library) is to develop the interface for such a container once, and then use everywhere for data of any type. The type of a container is the tempate parameter"><meta property="og:type" content="blog"><meta property="og:title" content="C++ STL summary"><meta property="og:url" content="http://leewangml.com/2022/08/26/C-STL-summary/"><meta property="og:site_name" content="Masen Blog"><meta property="og:description" content="SummaryThe idea of STL (Standard Template Library) is to develop the interface for such a container once, and then use everywhere for data of any type. The type of a container is the tempate parameter"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://leewangml.com/img/og_image.png"><meta property="article:published_time" content="2022-08-26T20:13:03.000Z"><meta property="article:modified_time" content="2022-08-28T17:07:01.125Z"><meta property="article:author" content="Zhe Wang"><meta property="article:tag" content="C++"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://leewangml.com/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://leewangml.com/2022/08/26/C-STL-summary/"},"headline":"C++ STL summary","image":["http://leewangml.com/img/og_image.png"],"datePublished":"2022-08-26T20:13:03.000Z","dateModified":"2022-08-28T17:07:01.125Z","author":{"@type":"Person","name":"Zhe Wang"},"publisher":{"@type":"Organization","name":"Masen Blog","logo":{"@type":"ImageObject","url":"http://leewangml.com/img/logo.svg"}},"description":"SummaryThe idea of STL (Standard Template Library) is to develop the interface for such a container once, and then use everywhere for data of any type. The type of a container is the tempate parameter"}</script><link rel="canonical" href="http://leewangml.com/2022/08/26/C-STL-summary/"><link rel="icon" href="/img/favicon.JPG"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+          Array
+              .from(document.querySelectorAll('.tab-content'))
+              .forEach($tab => {
+                  $tab.classList.add('is-hidden');
+              });
+          Array
+              .from(document.querySelectorAll('.tabs li'))
+              .forEach($tab => {
+                  $tab.classList.remove('is-active');
+              });
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Masen Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="hhttps://github.com/Mr-Wang119"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-08-26T20:13:03.000Z" title="8/26/2022, 3:13:03 PM">2022-08-26</time></span><span class="level-item">Updated&nbsp;<time dateTime="2022-08-28T17:07:01.125Z" title="8/28/2022, 12:07:01 PM">2022-08-28</time></span><span class="level-item">9 minutes read (About 1350 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">C++ STL summary</h1><div class="content"><h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p>The idea of STL (Standard Template Library) is to develop the interface for such a container once, and then use everywhere for data of any type.</p>
+<p>The type of a container is the tempate parameter. Template parameters are specified with the ‘&lt;’ ‘&gt;’ brackets in code.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; N;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h1 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h1><p>Vector is an array with extended functionality.</p>
+<p>If you want to know whether the container is empty, you’re better off using empty() function:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> is_nonempty = (v.<span class="built_in">size</span>() &gt;= <span class="number">0</span>); <span class="comment">// Try to avoid this</span></span><br><span class="line"><span class="type">bool</span> is_nonempty = !v.<span class="built_in">empty</span>();</span><br></pre></td></tr></table></figure>
+
+<p>This is because not all the containers can report their size in O(1), and you should not require counting all elements in a double-linked list just to ensure that it contains at least one.</p>
+<p>When using  <code>push_back()</code> ,vector will not allocate just one element each time. Instead, vector allocates more memory then it actually needs when adding new elements.</p>
+<p>The <code>resize()</code> function makes vector contain the required number of elements. If you require less elements than vector already contain, the last ones will be deleted.</p>
+<p>If you use <code>push_back()</code> after <code>resize()</code>, it will add elements AFTER the newly allocated size, but not INTO it.</p>
+<p>When vector is passed as a parameter to some function, a copy of vector is actually created. It may take a lot of time and memory to create new vectors when they are not really needed. Using reference instread.</p>
+<h1 id="Pairs"><a href="#Pairs" class="headerlink" title="Pairs"></a>Pairs</h1><p>The greate advantage of pairs is that they have built-in operations to compare themselves. Pairs are compared first-to-second element.</p>
+<h1 id="Iterators"><a href="#Iterators" class="headerlink" title="Iterators"></a>Iterators</h1><p>In STL iterators are the most general way to access data in containers. Objects with take value (unary *), comparison, and increment&#x2F;decrement(++&#x2F;–) that are associated with containers are called iterators. Any STL container may be traversed by means of an iterator.</p>
+<p>The following operations are defined for iterators:</p>
+<ul>
+<li>get value of an iterator, int x &#x3D; *it;</li>
+<li>increment and decrement iterators it1++, it2–;</li>
+<li>compare iterators by ‘!&#x3D;’ and by ‘&lt;’</li>
+<li>add an immediate to iterator it +&#x3D; 20; &lt;&#x3D;&gt; shift 20 elements forward</li>
+<li>get the distance between iterators, int n &#x3D; it2 - ti1;</li>
+</ul>
+<h1 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h1><p>Set can add, remove and check the presence of particular element in O(log N), where N is the count of objects in the set. A count of the elements in the set, N, is returned in O(1).</p>
+<p>There are several <code>find()</code>s in STL. There is a global algorithm <code>find()</code>, which takes two iterators, element, and works for O(N). It is possible to use it for searching for element in set, but why use an O(N) alogrithm while there exists an O(log N) one? Another algorithm that works for O(log N) while called as member function is <code>count()</code>.</p>
+<h1 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h1><p>While <code>map::find()</code> will never change the contents of map, operator [] will create an element if it does not exist. This is why operator [] may not be used if map is passed as a const reference parameter to some function.</p>
+<h1 id="Internally"><a href="#Internally" class="headerlink" title="Internally"></a>Internally</h1><p>Internally map and set are almost always stored as red-black trees. The elements of map and set are always sorted in ascending order while traversing these containers. </p>
+<h1 id="Algorithms"><a href="#Algorithms" class="headerlink" title="Algorithms"></a>Algorithms</h1><p>Set ans map have the member functions <code>find()</code> and <code>count()</code>, which works in O(log N), while <code>std::find()</code> and <code>std::count()</code> take O(N).</p>
+<h1 id="String-Streams"><a href="#String-Streams" class="headerlink" title="String Streams"></a>String Streams</h1><p>C++ prvides two objects for some string processing&#x2F;input&#x2F;output: <code>istringstream</code> and <code>ostringstream</code>. They are both declared in <code>#include &lt;sstream&gt;</code>.</p>
+<p>Object istringstream allows you to read from a string like you do from a standart input.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">const</span> string &amp; s)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Construct an object to parse strings</span></span><br><span class="line">  <span class="function">istringstream <span class="title">is</span><span class="params">(s)</span></span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// vector to store data</span></span><br><span class="line">  vector&lt;<span class="type">int</span>&gt; v;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Read integer while possible and add it to the vector</span></span><br><span class="line">  <span class="type">int</span> tmp;</span><br><span class="line">  <span class="keyword">while</span> (is &gt;&gt; tmp) &#123;</span><br><span class="line">    v.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">f</span><span class="params">(<span class="type">const</span> vector&lt;<span class="type">int</span>&gt; &amp; v)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Construct an object to do formatted output</span></span><br><span class="line">  ostringstream os;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Copy all elements from vector&lt;int&gt; to string stream as text</span></span><br><span class="line">  <span class="built_in">tr</span>(v, it) &#123;</span><br><span class="line">    os &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; *it;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Get string from string stream</span></span><br><span class="line">  string s = os.<span class="built_in">str</span>();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Remove first space character</span></span><br><span class="line">  <span class="keyword">if</span> (!s.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">    s = s.<span class="built_in">substr</span>(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Nontrivial-Sorting"><a href="#Nontrivial-Sorting" class="headerlink" title="Nontrivial Sorting"></a>Nontrivial Sorting</h1><p><code>sort()</code> uses the same technique as all STL:</p>
+<ul>
+<li>All comparison is based on <code>operator &lt;</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">fraction</span> &#123;</span><br><span class="line">  <span class="type">int</span> n, d;</span><br><span class="line">  <span class="type">bool</span> <span class="keyword">operator</span> &lt; (<span class="type">const</span> fraction &amp; f) <span class="type">const</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> n*f.d &lt; f.n*d;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>or</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="type">double</span>,<span class="type">double</span>&gt; dd;</span><br><span class="line"><span class="type">const</span> <span class="type">double</span> epsilon = <span class="number">1e-6</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">sort_by_polar_angle</span> &#123;</span><br><span class="line">  dd center;</span><br><span class="line">  <span class="comment">// Constructor of any type</span></span><br><span class="line">  <span class="comment">// Just find and store the center</span></span><br><span class="line">  <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="title">sort_by_polar_angle</span><span class="params">(T b, T e)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    center = <span class="built_in">dd</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">while</span> (b != e) &#123;</span><br><span class="line">      center.first += -&gt; first;</span><br><span class="line">      center.second += -&gt; second;</span><br><span class="line">      b++;</span><br><span class="line">      count++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">double</span> k = count ? (<span class="number">1.0</span> / count) : <span class="number">0</span>;</span><br><span class="line">    center.first *= k;</span><br><span class="line">    center.second *= k;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Compare two points, return true if the first one is earlier than the second one looking by polar angle</span></span><br><span class="line">  <span class="comment">// When writing comparator, you should override not &#x27;operator &lt;&#x27; but &#x27;operator ()&#x27;</span></span><br><span class="line">  <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="type">const</span> dd &amp; a, <span class="type">const</span> dd &amp; b)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">    <span class="type">double</span> p1 = <span class="built_in">atan2</span>(a.second - center.second, a.first - center.first);</span><br><span class="line">    <span class="type">double</span> p2 = <span class="built_in">atan2</span>(b.second - center.second, b.first - center.first);</span><br><span class="line">    <span class="keyword">return</span> p1 + epsilon &lt; p2;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">vector&lt;dd&gt; points;</span><br><span class="line"><span class="built_in">sort</span>(<span class="built_in">all</span>(points), <span class="built_in">sort_by_polar_angle</span>(<span class="built_in">all</span>(points)))</span><br></pre></td></tr></table></figure>
+
+<p><code>operator &lt;</code> should always return false for equal objects.</p>
+<p>Imagine you are going to make the <code>struct point</code>. We want to interset some line segments and make a set of intersection points. Due to finite computer precision, some points will be the same while their coordinates differ a bit.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">comst <span class="type">double</span> epsilon = <span class="number">1e-7</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">point</span> &#123;</span><br><span class="line">  <span class="type">double</span> x, y;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Declare operator &lt; taking precision into account</span></span><br><span class="line">  <span class="type">bool</span> <span class="keyword">operator</span> &lt; (<span class="type">const</span> point &amp; p) <span class="type">const</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; p.x - epsilon) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (x &gt; p.x + epsilon) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (y &lt; p.y - epsilon) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (y &gt; p.y + epsilon) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Time-Complexity"><a href="#Time-Complexity" class="headerlink" title="Time Complexity"></a>Time Complexity</h1><h2 id="Priority-Queue"><a href="#Priority-Queue" class="headerlink" title="Priority Queue"></a>Priority Queue</h2><p>Priority Queue is the implementation of Max Heap by default.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q.top()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Q.push()</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Q.pop()</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Q.empty()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<h2 id="Map-1"><a href="#Map-1" class="headerlink" title="Map"></a>Map</h2><p>The <code>map&lt;int, int&gt; M</code> is the implementation of self-balancing Red-Black Trees.</p>
+<p>The <code>unordered_map&lt;int,int&gt; M</code> is the implementation of Hash Table which makes the complexity of operations like insert, delete and search to Theta(1).</p>
+<p>The <code>multimap&lt;int,int&gt; M</code> is the implementation of Red-Black Trees which are self-balancing trees making the cost of operations the same as the map.</p>
+<p>the <code>unordered_multimap&lt;int, int&gt; M</code> is the implemented same as the unordered map is implemented which is the Hash Table.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>M.find(x)</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>M.insert(pair&lt;int,int&gt;(x,y))</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>M.erase(x)</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>M.empty()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>M.clear()</td>
+<td>Theta(n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>M.size()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<h2 id="Set-1"><a href="#Set-1" class="headerlink" title="Set"></a>Set</h2><p>The <code>set&lt;int&gt; s</code> is the implementation of Binary Search Trees.</p>
+<p>The <code>unordered_set&lt;int&gt; s</code> is the implementation of Hash Table.</p>
+<p>The <code>multiset&lt;int&gt; s</code> is the implementation of Red-Black trees.</p>
+<p>The <code>unordered_multiset&lt;int&gt; s</code> is implemented the same as the unordered set but uses an extra variable that keeps track of the count.</p>
+<p>The complexity becomes Theta(1) and O(n) when using unordered_set the ease of access becomes easier due to Hash Table implementation.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s.find()</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>s.insert(x)</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>s.erase(x)</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>s.size()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>s.empty()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><p>It is implemented using the linked list implementation of a stack.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s.top()</td>
+<td>O(1)</td>
+<td>o(1)</td>
+</tr>
+<tr>
+<td>s.pop()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>s.empty()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>s.push(x)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><p>Queue in STL is implemented using a linked list.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>q.push(x)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>q.pop()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>q.front()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>q.back()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>q.empty()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>q.size()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<h2 id="Vector-1"><a href="#Vector-1" class="headerlink" title="Vector"></a>Vector</h2><p>Vector is the implementation of dynamic arrays and uses new for memory allocation in heap.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sort(v.begin(), v.end())</td>
+<td>Theta(nlog(n))</td>
+<td>Theta(log n)</td>
+</tr>
+<tr>
+<td>Reverse(v.begin(), v.end())</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>v.push_back(x)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>v.pop_back(x)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>v.size()</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>v.clear()</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>v.erase()</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+</div><div class="article-licensing box"><div class="licensing-title"><p>C++ STL summary</p><p><a href="http://leewangml.com/2022/08/26/C-STL-summary/">http://leewangml.com/2022/08/26/C-STL-summary/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Zhe Wang</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-08-26</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2022-08-28</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/C/">C++</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/03/12/Learning-Notes-Google-File-System/"><span class="level-item">Learning Notes: Google File System</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "148de96fdcfd07fd9879bf68f3b25c91",
+            repo: "https://github.com/Mr-Wang119/Mr-Wang119.github.io",
+            owner: "Mr-Wang119",
+            clientID: "7ba4a13c098768702c7c",
+            clientSecret: "b09b3b9b2aed35c372561f49a8b8cf26e9926204",
+            admin: ["Mr-Wang119"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "en",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="https://s3.amazonaws.com/images.masen.com/IMG_3439.JPG" alt="Zhe (Masen) Wang"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Zhe (Masen) Wang</p><p class="is-size-6 is-block">ECE M.Eng. UIUC</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Urbana,IL,USA</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">8</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">11</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/Mr-Wang119" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/Mr-Wang119"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/zhe-joe-wang-79b1b31a4/"><i class="fab fa-linkedin"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Email" href="mailto:zhewang8@illinois.edu"><i class="fa fa-envelope"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E5%9B%BE%E5%83%8F/"><span class="level-start"><span class="level-item">图像</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/"><span class="level-start"><span class="level-item">机器学习基础</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/"><span class="level-start"><span class="level-item">自然语言处理</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2022-08-26T20:13:03.000Z">2022-08-26</time></p><p class="title"><a href="/2022/08/26/C-STL-summary/">C++ STL summary</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2022-03-12T16:55:54.000Z">2022-03-12</time></p><p class="title"><a href="/2022/03/12/Learning-Notes-Google-File-System/">Learning Notes: Google File System</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2022-02-19T16:05:51.000Z">2022-02-19</time></p><p class="title"><a href="/2022/02/19/Introduction-of-Eluerian-path/">Introduction of Eulerian path</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-01-22T17:42:24.000Z">2020-01-22</time></p><p class="title"><a href="/2020/01/22/Sequence%20Models%20%E7%BB%BC%E8%BF%B0/">GRU LSTM 综述</a></p><p class="categories"><a href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-01-17T16:26:00.000Z">2020-01-17</time></p><p class="title"><a href="/2020/01/17/%E5%9B%BE%E5%83%8F%E6%8F%8F%E8%BF%B0%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/">图像自动生成描述</a></p><p class="categories"><a href="/categories/%E5%9B%BE%E5%83%8F/">图像</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2022/08/"><span class="level-start"><span class="level-item">August 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/03/"><span class="level-start"><span class="level-item">March 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/02/"><span class="level-start"><span class="level-item">February 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/01/"><span class="level-start"><span class="level-item">January 2020</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/10/"><span class="level-start"><span class="level-item">October 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/04/"><span class="level-start"><span class="level-item">April 2019</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Algorithms/"><span class="tag">Algorithms</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/C/"><span class="tag">C++</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Distributed-System/"><span class="tag">Distributed System</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"><span class="tag">图像处理</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/"><span class="tag">图像特征提取</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%AB%9E%E8%B5%9B/"><span class="tag">竞赛</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/"><span class="tag">自然语言处理</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/"><span class="tag">语言模型</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/"><span class="tag">集成学习</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%9D%A2%E8%AF%95/"><span class="tag">面试</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE/"><span class="tag">项目</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Masen Blog" height="28"></a><p class="is-size-7"><span>&copy; 2022 Zhe Wang</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Mr-Wang119"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
